@@ -158,7 +158,10 @@ CalYh::CalYh(QWidget *parent) :
                 {
                     if(!isClear)
                     {
-                        s+="(sin)=";
+                        double tmps=s.toDouble();
+                        double showG=sinFunc->sin(tmps);
+                        s+="°(sin)=";
+                        s+=QString("%6").arg(showG);
                         ui->editYh->setText(s);
                         //TODO:在此处添加函数的计算结果到s中
 
@@ -184,10 +187,19 @@ CalYh::CalYh(QWidget *parent) :
                 {
                     if(!isClear)
                     {
+                        double dous=s.toDouble();
+                        double Iwant=arcsinYh->MyArcsin(dous,true);
                         //当已经按过arcsin按钮后，再按下不会有任何变化
                         s+="(arcsin)=";
                         //TODO:在此处添加arcsin函数的计算结果到s中
-
+                        if(Iwant==100)
+                        {
+                            s+="error!";
+                        }
+                        else {
+                            s+=QString("%6").arg(Iwant);
+                            s+="°";
+                        }
                         ui->editYh->setText(s);
                         isClear=true;
                     }

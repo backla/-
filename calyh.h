@@ -2,6 +2,8 @@
 #define CALYH_H
 
 #include <QDialog>
+#include "arcsin.h"
+#include "sin.h"
 
 namespace Ui {
 class CalYh;
@@ -21,6 +23,8 @@ private:
     QString s;//控件显示的字符串
     bool isClear;//判断已经按过sin/cos/arcsin/arctan按钮，按过表示true，默认false
 
+    Sin *sinFunc;
+    ArcSin *arcsinYh;
 };
 
 #endif // CALYH_H
