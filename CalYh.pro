@@ -26,11 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         calyh.cpp \
-    arcsin.cpp
+    arcsin.cpp \
+    sin.cpp
 
 HEADERS += \
         calyh.h \
-    arcsin.h
+    arcsin.h \
+    sin.h
 
 FORMS += \
         calyh.ui

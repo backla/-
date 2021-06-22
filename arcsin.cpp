@@ -17,6 +17,10 @@ double ArcSin::MyArcsin(double dous,bool isAngle)
         return 100;//正常绝对不会输出这个结果，因此可以根据这个结果判断输入是否有问题
     }
 
+    if(dous==-1)
+        return -90;
+    if(dous==1)
+        return 90;
     //接下来就是输入没问题的前提下进行泰勒展开
     double result = dous;
     double result_a = 1.0;
