@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     arctan.cpp \
+    cos.cpp \
         main.cpp \
         calyh.cpp \
     arcsin.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     arctan.h \
         calyh.h \
     arcsin.h \
+    cos.h \
     sin.h
 
 FORMS += \

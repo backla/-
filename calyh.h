@@ -5,6 +5,7 @@
 #include "arcsin.h"
 #include "sin.h"
 #include "arctan.h"
+#include "cos.h"
 
 namespace Ui {
 class CalYh;
@@ -28,6 +29,7 @@ private:
     Sin *sinFunc;
     ArcSin *arcsinYh;
     ArcTan *arctanYh;
+    Cos *cosFunc;
 };
 
 #endif // CALYH_H
