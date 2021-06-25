@@ -198,9 +198,11 @@ CalYh::CalYh(QWidget *parent) :
                 {
                     if(!isClear)
                     {
-                        s+="(cos)=";
+                        double tmpc=s.toDouble();
+                        double showC=cosFunc->cos(tmpc);
+                        s+="°(cos)=";
                         //TODO:在此处添加函数的计算结果到s中
-
+                        s+=QString("%6").arg(showC);
                        ui->editYh->setText(s);
                        isClear=true;
                     }
