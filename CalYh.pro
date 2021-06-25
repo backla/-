@@ -24,12 +24,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    arctan.cpp \
         main.cpp \
         calyh.cpp \
     arcsin.cpp \
     sin.cpp
 
 HEADERS += \
+    arctan.h \
         calyh.h \
     arcsin.h \
     sin.h

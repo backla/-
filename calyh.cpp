@@ -10,7 +10,8 @@ CalYh::CalYh(QWidget *parent) :
     ui->setupUi(this);
     layoutYh();//布局
 
-    isClear=false;//初始false
+    isClear=true;//初始false
+    isNeg=0;
 
     //槽函数
         connect(ui->btn0,&QPushButton::clicked,
@@ -145,12 +146,35 @@ CalYh::CalYh(QWidget *parent) :
                     ui->editYh->setText(s);
                 }
                 );
+        connect(ui->btnneg,&QPushButton::clicked,
+                [=]()
+                {
+                    if(isClear)
+                    {
+                        s="";
+                        isClear=false;
+                        isNeg=0;
+                        if(isNeg==0)
+                        {
+                            s+="-";
+                            isNeg++;
+                        }
+                    }
+                    else {
+                        s+="=error!输入负号无效";
+                        isClear=true;
+                        isNeg=0;
+                    }
+                    ui->editYh->setText(s);
+                }
+                );
         connect(ui->btnclear,&QPushButton::clicked,
                 [=]()
                 {
                     s="";
                     ui->editYh->setText(s);
-                    isClear=false;
+                    isClear=true;
+                    isNeg=0;
                 }
                 );
         connect(ui->btnsin,&QPushButton::clicked,
@@ -194,7 +218,7 @@ CalYh::CalYh(QWidget *parent) :
                         //TODO:在此处添加arcsin函数的计算结果到s中
                         if(Iwant==100)
                         {
-                            s+="error!";
+                            s+="error!请输入-1到+1之间的数值";
                         }
                         else {
                             s+=QString("%6").arg(Iwant);
@@ -210,13 +234,17 @@ CalYh::CalYh(QWidget *parent) :
                 {
                     if(!isClear)
                     {
+                        double x=s.toDouble();
+                        double Tan=arctanYh->Arctan(x);
                         s+="(arctan)=";
                         //TODO:输出计算结果到s中
+                        s+=QString("%6").arg(Tan);
+                        s+="°";
+                        }
 
                         ui->editYh->setText(s);
                         isClear=true;
                     }
-                }
                 );
 
 }
@@ -239,7 +267,9 @@ void CalYh::layoutYh()
     QSizePolicy sizepolicy(QSizePolicy::Preferred,QSizePolicy::Expanding);//设置格式
 
     topLayout->addWidget(ui->editYh); //控件添加布局
+    topLayout->addWidget(ui->btnclear);
     ui->editYh->setSizePolicy(sizepolicy);
+    ui->btnclear->setSizePolicy(sizepolicy);
     //字体大小设置
     QFont ft;
     ft.setPointSize(20);
@@ -292,9 +322,9 @@ void CalYh::layoutYh()
     bottomLayout->addWidget(ui->btnpoint,3,1);
     ui->btnpoint->setSizePolicy(sizepolicy);
     ui->btnpoint->setFont(ft);
-    bottomLayout->addWidget(ui->btnclear,3,2);
-    ui->btnclear->setSizePolicy(sizepolicy);
-    ui->btnclear->setFont(ft);
+    bottomLayout->addWidget(ui->btnneg,3,2);
+    ui->btnneg->setSizePolicy(sizepolicy);
+    ui->btnneg->setFont(ft);
     bottomLayout->addWidget(ui->btnarctan,3,3);
     ui->btnarctan->setSizePolicy(sizepolicy);
     ui->btnarctan->setFont(ft);

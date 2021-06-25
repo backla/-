@@ -159,8 +159,8 @@
   <widget class="QPushButton" name="btnclear">
    <property name="geometry">
     <rect>
-     <x>350</x>
-     <y>400</y>
+     <x>580</x>
+     <y>70</y>
      <width>81</width>
      <height>51</height>
     </rect>
@@ -232,6 +232,19 @@
    </property>
    <property name="readOnly">
     <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnneg">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>410</y>
+     <width>81</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>-</string>
    </property>
   </widget>
  </widget>
