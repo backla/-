@@ -24,19 +24,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-    arctan.cpp \
-    cos.cpp \
         main.cpp \
         calyh.cpp \
     arcsin.cpp \
-    sin.cpp
+    sin.cpp \
+    cos.cpp \
+    arctan.cpp
 
 HEADERS += \
-    arctan.h \
         calyh.h \
     arcsin.h \
+    sin.h \
     cos.h \
-    sin.h
+    arctan.h
 
 FORMS += \
         calyh.ui

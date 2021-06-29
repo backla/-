@@ -221,19 +221,6 @@
     <string>arcsin</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="editYh">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>60</y>
-     <width>491</width>
-     <height>71</height>
-    </rect>
-   </property>
-   <property name="readOnly">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QPushButton" name="btnneg">
    <property name="geometry">
     <rect>
@@ -245,6 +232,16 @@
    </property>
    <property name="text">
     <string>-</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="editYh">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>30</y>
+     <width>481</width>
+     <height>91</height>
+    </rect>
    </property>
   </widget>
  </widget>

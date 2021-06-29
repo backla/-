@@ -1,12 +1,12 @@
 #ifndef ARCSIN_H
 #define ARCSIN_H
-
+#include <qstring.h>
 
 class ArcSin
 {
 public:
     ArcSin();
-    double MyArcsin(double dous,bool isAngle);
+    QString ArcsinTest(QString sIn);
 };
 
 #endif // ARCSIN_H

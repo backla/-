@@ -3,8 +3,8 @@
 
 #include <QDialog>
 #include "arcsin.h"
-#include "sin.h"
 #include "arctan.h"
+#include "sin.h"
 #include "cos.h"
 
 namespace Ui {
@@ -27,9 +27,9 @@ private:
     int isNeg;//判断按过几次符号，只能输入一次符号，默认为0
 
     Sin *sinFunc;
-    ArcSin *arcsinYh;
-    ArcTan *arctanYh;
     Cos *cosFunc;
+    ArcSin *arcsinTest;
+    ArcTan *arctanYh;
 };
 
 #endif // CALYH_H
