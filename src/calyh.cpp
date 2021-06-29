@@ -2,18 +2,33 @@
 #include "ui_calyh.h"
 #include <QGridLayout>
 #include <QVBoxLayout>
+#include <QDebug>
 
 CalYh::CalYh(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CalYh)
 {
+    //1.启动UI界面
     ui->setupUi(this);
-    layoutYh();//布局
 
+    //2.布局设置函数
+    layoutYh();//设置布局，采用垂直分布+网格分布
+
+    //3.初始化相关变量
     isClear=true;//初始false
     isNeg=0;
 
-    //槽函数
+    //4.槽函数=====采用Lamda表达式
+    /* 当按下对应按钮后，进行的操作
+     * ---btn0~btn9------数字0~9
+     * ---btnpoint-------小数点
+     * ---btnneg---------负号/减号
+     * ---btnclear--------清空按钮
+     * ---btnsin----------按下后进行sin函数运算
+     * ---btncos----------按下后进行cos运算
+     * ---btnarcsin-------按下后进行arcsin运算
+     * ---btnarctan-------按下后进行arctan运算
+    */
         connect(ui->btn0,&QPushButton::clicked,
                 [=]()
                 {
@@ -149,23 +164,30 @@ CalYh::CalYh(QWidget *parent) :
         connect(ui->btnneg,&QPushButton::clicked,
                 [=]()
                 {
-                    if(isClear)
-                    {
-                        s="";
-                        isClear=false;
-                        isNeg=0;
-                        if(isNeg==0)
-                        {
-                            s+="-";
-                            isNeg++;
-                        }
-                    }
-                    else {
-                        s+="=error!输入负号无效";
-                        isClear=true;
-                        isNeg=0;
-                    }
-                    ui->editYh->setText(s);
+//                    if(isClear)
+//                    {
+//                        s="";
+//                        isClear=false;
+//                        isNeg=0;
+//                        if(isNeg==0)
+//                        {
+//                            s+="-";
+//                            isNeg++;
+//                        }
+//                    }
+//                    else {
+//                        s+="=error!输入负号无效";
+//                        isClear=true;
+//                        isNeg=0;
+//                    }
+//                    ui->editYh->setText(s);
+            if(isClear)
+            {
+                s="";
+                isClear=false;
+            }
+            s+="-";
+            ui->editYh->setText(s);
                 }
                 );
         connect(ui->btnclear,&QPushButton::clicked,
@@ -183,6 +205,10 @@ CalYh::CalYh(QWidget *parent) :
                     if(!isClear)
                     {
                         double tmps=s.toDouble();
+                        //测试负号能否有多个---【不能】toDouble不能处理类似-3-2的数据
+                        qDebug()<<tmps;
+                        if(s ==QString::fromLocal8Bit("0"))
+                            qDebug()<<"这个只有输入0才会打印出来，异常数据不会打印";
                         double showG=sinFunc->sin(tmps);
                         s+="°(sin)=";
                         s+=QString("%6").arg(showG);
@@ -211,22 +237,19 @@ CalYh::CalYh(QWidget *parent) :
         connect(ui->btnarcsin,&QPushButton::clicked,
                 [=]()
                 {
-                    if(!isClear)
+                    if(!isClear)//不清空界面的情况
                     {
-                        double dous=s.toDouble();
-                        double Iwant=arcsinYh->MyArcsin(dous,true);
-                        //当已经按过arcsin按钮后，再按下不会有任何变化
-                        s+="(arcsin)=";
-                        //TODO:在此处添加arcsin函数的计算结果到s中
-                        if(Iwant==100)
-                        {
-                            s+="error!请输入-1到+1之间的数值";
-                        }
-                        else {
-                            s+=QString("%6").arg(Iwant);
-                            s+="°";
-                        }
+                        //1)ans-----arcsin计算结果
+                        QString ans=arcsinTest->ArcsinTest(s);
+                        //2)表示为arctan(s)=的形式
+                        s="arctan("+s+")=";
+                        //3)要计算的数据+结果
+                        s+=ans;
+                        qDebug()<<s;//测试用
+
+                        //4）显示在界面中
                         ui->editYh->setText(s);
+                        //5）清空界面标志位置为true，表示下一次不论输出什么，先将s清空
                         isClear=true;
                     }
                 }
@@ -246,7 +269,7 @@ CalYh::CalYh(QWidget *parent) :
 
                         ui->editYh->setText(s);
                         isClear=true;
-                    }
+                }
                 );
 
 }
@@ -274,7 +297,7 @@ void CalYh::layoutYh()
     ui->btnclear->setSizePolicy(sizepolicy);
     //字体大小设置
     QFont ft;
-    ft.setPointSize(20);
+    ft.setPointSize(15);
     ui->editYh->setFont(ft);
     mainLayout->addLayout(topLayout);//控件添加到整体布局中
 
