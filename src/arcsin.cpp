@@ -83,6 +83,6 @@ QString ArcSin::ArcsinTest(QString sIn)
     }
     result=result*180/PI;//输出角度值
     ans=QString("%6").arg(result);//将角度值转换为QString类型
-    ans+="°";//加上角度符号
+
     return ans;
 }

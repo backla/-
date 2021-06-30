@@ -43,18 +43,15 @@ QString ArcTan::ArctanTest(QString sIn)
         }
         result= result*180/PI;
         ans=QString("%6").arg(result);
-        ans+="°";//加上角度符号
         return ans;
     }
     else if( x > 1 || x < -1){
         result = atan(x);
         result= result*180/PI;
         ans=QString("%6").arg(result);
-        ans+="°";//加上角度符号
         return ans;
     }
     result= result*180/PI;
     ans=QString("%6").arg(result);
-    ans+="°";//加上角度符号
     return ans;
 }

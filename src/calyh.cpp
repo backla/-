@@ -13,7 +13,7 @@ CalYh::CalYh(QWidget *parent) :
     ui->setupUi(this);
 
     //2.布局设置函数
-    layoutYh();//设置布局，采用垂直分布+网格分布
+    layout();//设置布局，采用垂直分布+网格分布
 
     //3.初始化相关变量
     isClear=true;//初始false
@@ -231,6 +231,7 @@ CalYh::CalYh(QWidget *parent) :
                         s="arcsin("+s+")=";
                         //3)要计算的数据+结果
                         s+=ans;
+                        s+="°";//加上角度符号
                         qDebug()<<s;//测试用
 
                         //4）显示在界面中
@@ -251,6 +252,7 @@ CalYh::CalYh(QWidget *parent) :
                 s="arctan("+s+")=";
                 //3)要计算的数据+结果
                 s+=ans;
+                s+="°";//加上角度符号
 
                 //4）显示在界面中
                 ui->editYh->setText(s);
@@ -262,7 +264,8 @@ CalYh::CalYh(QWidget *parent) :
         connect(ui->btntest,&QPushButton::clicked,
                 [=]()
         {
-            testAll();
+             s=testAll();
+             ui->editYh2->setText(s);
         });
 }
 
@@ -271,7 +274,7 @@ CalYh::~CalYh()
     delete ui;
 }
 
-void CalYh::layoutYh()
+void CalYh::layout()
 {
     QVBoxLayout *mainLayout;//整体布局为垂直布局,上方为topLayout,下边为bottomLayout
     QHBoxLayout *medLayout;//中间布局为水平布局，左边为main,右边为test
@@ -292,16 +295,23 @@ void CalYh::layoutYh()
     ritLayout->addWidget(ui->editYh2);
     ritLayout->setStretchFactor(ui->btntest,1);
     ritLayout->setStretchFactor(ui->editYh2,4);
+    ui->btntest->setSizePolicy(sizepolicy);
+    ui->editYh2->setSizePolicy(sizepolicy);
 
     //2.上半部分垂直布局
     topLayout->addWidget(ui->editYh); //控件添加布局
     topLayout->addWidget(ui->btnclear);
     ui->editYh->setSizePolicy(sizepolicy);
+    ui->btnclear->setSizePolicy(sizepolicy);
 
     //字体大小设置
     QFont ft;
     ft.setPointSize(15);
     ui->editYh->setFont(ft);
+    ui->btntest->setFont(ft);
+    ui->btnclear->setFont(ft);
+    ft.setPointSize(15);
+    ui->editYh2->setFont(ft);
 
     //3.下半部分网格布局
     bottomLayout->addWidget(ui->btn1,0,0);//按钮布局
@@ -372,8 +382,261 @@ void CalYh::layoutYh()
 
 QString CalYh::testAll()
 {
+    QString answer="";//结果显示测试结果
+    QString sIn;//存放Tayler计算结果
+    double doubleIn;//Tayler计算结果double类型
+    double compareIn;//调用math函数计算结果
+    double diff;//两结果差值
+
     //1.sin函数测试
+    answer+="-------sin函数测试-------\n";
     //1）负数测试
+    sIn=sinFunc->SinTest("-30.5");//-30.5测试
+    doubleIn=sIn.toDouble();//转换为double
+    compareIn=sin(-30.5*M_PI/180);
+    diff=abs(doubleIn-compareIn);
+
+    if(diff<0.01)
+    {
+        answer+="  1)负数测试通过！\n";
+    }
+    else {
+        answer+="  1)负数测试不通过！\n";
+        qDebug()<<diff;
+    }
+
+    //2）0测试
+    sIn=sinFunc->SinTest("0");//0测试
+    doubleIn=sIn.toDouble();//转换为double
+    compareIn=sin(0);
+    diff=abs(doubleIn-compareIn);
+
+    if(diff<0.01)
+    {
+        answer+="  2)0测试通过！\n";
+    }
+    else {
+        answer+="  2)0测试不通过！\n";
+        qDebug()<<diff;
+    }
+
+    //3）正数测试
+    sIn=sinFunc->SinTest("562.98");//562.95测试
+    doubleIn=sIn.toDouble();//转换为double
+    compareIn=sin(562.98*M_PI/180);
+    diff=abs(doubleIn-compareIn);
+
+    if(diff<0.01)
+    {
+        answer+="  3)正数测试通过！\n";
+    }
+    else {
+        answer+="  3)正数测试不通过！\n";
+        qDebug()<<diff;
+    }
+
+    //4）异常值测试
+    sIn=sinFunc->SinTest("0.56-9");//测试
+
+    if(sIn !=QString::fromLocal8Bit("error!--输入数据异常"))
+    {
+        answer+="  4)异常值测试通过！\n";
+    }
+    else {
+        answer+="  4)异常值测试不通过！\n";
+        qDebug()<<diff;
+    }
+
+    //2.cos函数测试
+    answer+="\n-------cos函数测试-------\n";
+    //1）负数测试
+    sIn=cosFunc->CinTest("-30.5");//-30.5测试
+    doubleIn=sIn.toDouble();//转换为double
+    compareIn=cos(-30.5*M_PI/180);
+    diff=abs(doubleIn-compareIn);
+
+    if(diff<0.01)
+    {
+        answer+="  1)负数测试通过！\n";
+    }
+    else {
+        answer+="  1)负数测试不通过！\n";
+        qDebug()<<diff;
+    }
+
+    //2）0测试
+    sIn=cosFunc->CinTest("0");//0测试
+    doubleIn=sIn.toDouble();//转换为double
+    compareIn=cos(0);
+    diff=abs(doubleIn-compareIn);
+
+    if(diff<0.01)
+    {
+        answer+="  2)0测试通过！\n";
+    }
+    else {
+        answer+="  2)0测试不通过！\n";
+        qDebug()<<diff;
+    }
+
+    //3）正数测试
+    sIn=cosFunc->CinTest("562.98");//562.95测试
+    doubleIn=sIn.toDouble();//转换为double
+    compareIn=cos(562.98*M_PI/180);
+    diff=abs(doubleIn-compareIn);
+
+    if(diff<0.01)
+    {
+        answer+="  3)正数测试通过！\n";
+    }
+    else {
+        answer+="  3)正数测试不通过！\n";
+        qDebug()<<diff;
+    }
+
+    //4）异常值测试
+    sIn=cosFunc->CinTest("-38.5.9");//测试
+
+    if(sIn !=QString::fromLocal8Bit("error!--输入数据异常"))
+    {
+        answer+="  4)异常值测试通过！\n";
+    }
+    else {
+        answer+="  4)异常值测试不通过！\n";
+        qDebug()<<diff;
+    }
+
+    //3.arcsin函数测试
+    answer+="\n-------arcsin函数测试-------\n";
+    //1）取值范围内负数测试
+     sIn=arcsinTest->ArcsinTest("-0.922");//-0.922测试
+     doubleIn=sIn.toDouble();//转换为double
+     compareIn=asin(-0.922)*180/M_PI;
+     diff=abs(doubleIn-compareIn);
+
+     if(diff<0.01)
+     {
+         answer+="  1)取值范围内负数测试通过！\n";
+     }
+     else {
+         answer+="  1)取值范围内负数测试不通过！\n";
+         qDebug()<<diff;
+     }
+
+    //2）0测试
+     sIn=arcsinTest->ArcsinTest("0");//0测试
+     doubleIn=sIn.toDouble();//转换为double
+     compareIn=asin(0)*180/M_PI;
+     diff=abs(doubleIn-compareIn);
+
+     if(diff<0.01)
+     {
+         answer+="  2)0测试通过！\n";
+     }
+     else {
+         answer+="  2)0测试不通过！\n";
+         qDebug()<<diff;
+     }
+
+    //3）取值范围内正数测试
+     sIn=arcsinTest->ArcsinTest("0.326");//测试
+     doubleIn=sIn.toDouble();//转换为double
+     compareIn=asin(0.326)*180/M_PI;
+     diff=abs(doubleIn-compareIn);
+
+     if(diff<0.01)
+     {
+         answer+="  3)取值范围内正数测试通过！\n";
+     }
+     else {
+         answer+="  3)取值范围内正数测试不通过！\n";
+         qDebug()<<diff;
+     }
+
+    //4）异常值测试
+     sIn=arcsinTest->ArcsinTest("0..56");//测试
+
+     if(sIn !=QString::fromLocal8Bit("error!--输入数据异常"))
+     {
+         answer+="  4)异常值测试通过！\n";
+     }
+     else {
+         answer+="  4)异常值测试不通过！\n";
+         qDebug()<<diff;
+     }
+
+    //5)取值范围外异常值测试
+     sIn=arcsinTest->ArcsinTest("-1.3");//测试
+
+     if(sIn !=QString::fromLocal8Bit("error!--输入数据超出运算范围"))
+     {
+         answer+="  5)取值范围外异常值测试通过！\n";
+     }
+     else {
+         answer+="  5)取值范围外异常值测试不通过！\n";
+         qDebug()<<diff;
+     }
 
 
+    //4.arctan函数测试
+     answer+="\n-------arctan函数测试-------\n";
+    //1）负数测试
+     sIn=arctanTest->ArctanTest("-9.22");//-9.22测试
+     doubleIn=sIn.toDouble();//转换为double
+     compareIn=atan(-9.22)*180/M_PI;
+     diff=abs(doubleIn-compareIn);
+
+     if(diff<0.01)
+     {
+         answer+="  1)负数测试通过！\n";
+     }
+     else {
+         answer+="  1)负数测试不通过！\n";
+         qDebug()<<diff;
+     }
+
+    //2）0测试
+     sIn=arctanTest->ArctanTest("0");//0测试
+     doubleIn=sIn.toDouble();//转换为double
+     compareIn=atan(0)*180/M_PI;
+     diff=abs(doubleIn-compareIn);
+
+     if(diff<0.01)
+     {
+         answer+="  2)0测试通过！\n";
+     }
+     else {
+         answer+="  2)0测试不通过！\n";
+         qDebug()<<diff;
+     }
+
+    //3）正数测试
+     sIn=arctanTest->ArctanTest("34.56");//测试
+     doubleIn=sIn.toDouble();//转换为double
+     compareIn=atan(34.56)*180/M_PI;
+     diff=abs(doubleIn-compareIn);
+
+     if(diff<0.01)
+     {
+         answer+="  3)正数测试通过！\n";
+     }
+     else {
+         answer+="  3)正数测试不通过！\n";
+         qDebug()<<diff;
+     }
+
+    //4）异常值测试
+     sIn=arctanTest->ArctanTest("0..56");//测试
+
+     if(sIn !=QString::fromLocal8Bit("error!--输入数据异常"))
+     {
+         answer+="  4)异常值测试通过！\n";
+     }
+     else {
+         answer+="  4)异常值测试不通过！\n";
+         qDebug()<<diff;
+     }
+
+
+     return answer;
 }
