@@ -17,7 +17,6 @@ CalYh::CalYh(QWidget *parent) :
 
     //3.初始化相关变量
     isClear=true;//初始false
-    isNeg=0;
 
     //4.槽函数=====采用Lamda表达式
     /* 当按下对应按钮后，进行的操作
@@ -207,13 +206,17 @@ CalYh::CalYh(QWidget *parent) :
                 {
                     if(!isClear)
                     {
-                        double tmpc=s.toDouble();
-                        double showC=cosFunc->cos(tmpc);
-                        s+="°(cos)=";
-                        //TODO:在此处添加函数的计算结果到s中
-                        s+=QString("%6").arg(showC);
-                       ui->editYh->setText(s);
-                       isClear=true;
+                        //1)ans-----arcsin计算结果
+                        QString ans=cosFunc->CinTest(s);
+                        //2)表示为arctan(s)=的形式
+                        s="cos("+s+"°)=";
+                        //3)要计算的数据+结果
+                        s+=ans;
+
+                        //4）显示在界面中
+                        ui->editYh->setText(s);
+                        //5）清空界面标志位置为true，表示下一次不论输出什么，先将s清空
+                        isClear=true;
                     }
                 }
                 );
