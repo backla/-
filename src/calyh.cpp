@@ -188,7 +188,7 @@ CalYh::CalYh(QWidget *parent) :
                     {           
                         //1)ans-----arcsin计算结果
                         QString ans=sinFunc->SinTest(s);
-                        //2)表示为arctan(s)=的形式
+                        //2)表示为sin(s)=的形式
                         s="sin("+s+"°)=";
                         //3)要计算的数据+结果
                         s+=ans;
@@ -208,7 +208,7 @@ CalYh::CalYh(QWidget *parent) :
                     {
                         //1)ans-----arcsin计算结果
                         QString ans=cosFunc->CinTest(s);
-                        //2)表示为arctan(s)=的形式
+                        //2)表示为cos(s)=的形式
                         s="cos("+s+"°)=";
                         //3)要计算的数据+结果
                         s+=ans;
@@ -245,17 +245,19 @@ CalYh::CalYh(QWidget *parent) :
                 {
             if(!isClear)
             {
-                double x=s.toDouble();
-                double Tan=arctanYh->Arctan(x);
-                s+="(arctan)=";
-                //TODO:输出计算结果到s中
-                s+=QString("%6").arg(Tan);
-                s+="°";
-                }
+                //1)ans-----arcsin计算结果
+                QString ans=arctanTest->ArctanTest(s);
+                //2)表示为arcsin(s)=的形式
+                s="arctan("+s+")=";
+                //3)要计算的数据+结果
+                s+=ans;
 
+                //4）显示在界面中
                 ui->editYh->setText(s);
+                //5）清空界面标志位置为true，表示下一次不论输出什么，先将s清空
                 isClear=true;
                 }
+        }
                 );
         connect(ui->btntest,&QPushButton::clicked,
                 [=]()
