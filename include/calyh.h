@@ -29,7 +29,7 @@ private:
     Sin *sinFunc;
     Cos *cosFunc;
     ArcSin *arcsinTest;
-    ArcTan *arctanYh;
+    ArcTan *arctanTest;
 };
 
 #endif // CALYH_H

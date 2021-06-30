@@ -1,11 +1,12 @@
 #ifndef ARCTAN_H
 #define ARCTAN_H
+#include <qstring.h>
 
 class ArcTan
 {
 public:
     ArcTan();
-    double Arctan(double x);
+    QString ArctanTest(QString sIn);
 };
 
 #endif // ARCTAN_H
