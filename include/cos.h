@@ -1,12 +1,13 @@
 #ifndef COS_H
 #define COS_H
+#include <qstring.h>
 
 
 class Cos
 {
 public:
     Cos();
-    double cos(double num);
+    QString CinTest(QString sIn);
 };
 
 #endif // COS_H

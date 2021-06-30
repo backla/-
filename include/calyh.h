@@ -25,7 +25,6 @@ private:
     QString testAll();//测试
     QString s;//控件显示的字符串
     bool isClear;//判断已经按过sin/cos/arcsin/arctan按钮，按过表示true，默认ture
-    int isNeg;//判断按过几次符号，只能输入一次符号，默认为0
 
     Sin *sinFunc;
     Cos *cosFunc;
