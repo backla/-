@@ -3,6 +3,7 @@
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QDebug>
+#include <math.h>
 
 CalYh::CalYh(QWidget *parent) :
     QDialog(parent),
@@ -164,30 +165,13 @@ CalYh::CalYh(QWidget *parent) :
         connect(ui->btnneg,&QPushButton::clicked,
                 [=]()
                 {
-//                    if(isClear)
-//                    {
-//                        s="";
-//                        isClear=false;
-//                        isNeg=0;
-//                        if(isNeg==0)
-//                        {
-//                            s+="-";
-//                            isNeg++;
-//                        }
-//                    }
-//                    else {
-//                        s+="=error!输入负号无效";
-//                        isClear=true;
-//                        isNeg=0;
-//                    }
-//                    ui->editYh->setText(s);
-            if(isClear)
-            {
-                s="";
-                isClear=false;
-            }
-            s+="-";
-            ui->editYh->setText(s);
+                    if(isClear)
+                    {
+                        s="";
+                        isClear=false;
+                    }
+                    s+="-";
+                    ui->editYh->setText(s);
                 }
                 );
         connect(ui->btnclear,&QPushButton::clicked,
@@ -196,26 +180,25 @@ CalYh::CalYh(QWidget *parent) :
                     s="";
                     ui->editYh->setText(s);
                     isClear=true;
-                    isNeg=0;
                 }
                 );
         connect(ui->btnsin,&QPushButton::clicked,
                 [=]()
                 {
                     if(!isClear)
-                    {
-                        double tmps=s.toDouble();
-                        //测试负号能否有多个---【不能】toDouble不能处理类似-3-2的数据
-                        qDebug()<<tmps;
-                        if(s ==QString::fromLocal8Bit("0"))
-                            qDebug()<<"这个只有输入0才会打印出来，异常数据不会打印";
-                        double showG=sinFunc->sin(tmps);
-                        s+="°(sin)=";
-                        s+=QString("%6").arg(showG);
-                        ui->editYh->setText(s);
-                        //TODO:在此处添加函数的计算结果到s中
+                    {           
+                        //1)ans-----arcsin计算结果
+                        QString ans=sinFunc->SinTest(s);
+                        //2)表示为arctan(s)=的形式
+                        s="sin("+s+"°)=";
+                        //3)要计算的数据+结果
+                        s+=ans;
 
+                        //4）显示在界面中
+                        ui->editYh->setText(s);
+                        //5）清空界面标志位置为true，表示下一次不论输出什么，先将s清空
                         isClear=true;
+
                     }
                 }
                 );
@@ -241,8 +224,8 @@ CalYh::CalYh(QWidget *parent) :
                     {
                         //1)ans-----arcsin计算结果
                         QString ans=arcsinTest->ArcsinTest(s);
-                        //2)表示为arctan(s)=的形式
-                        s="arctan("+s+")=";
+                        //2)表示为arcsin(s)=的形式
+                        s="arcsin("+s+")=";
                         //3)要计算的数据+结果
                         s+=ans;
                         qDebug()<<s;//测试用
@@ -257,21 +240,25 @@ CalYh::CalYh(QWidget *parent) :
         connect(ui->btnarctan,&QPushButton::clicked,
                 [=]()
                 {
-                    if(!isClear)
-                    {
-                        double x=s.toDouble();
-                        double Tan=arctanYh->Arctan(x);
-                        s+="(arctan)=";
-                        //TODO:输出计算结果到s中
-                        s+=QString("%6").arg(Tan);
-                        s+="°";
-                        }
+            if(!isClear)
+            {
+                double x=s.toDouble();
+                double Tan=arctanYh->Arctan(x);
+                s+="(arctan)=";
+                //TODO:输出计算结果到s中
+                s+=QString("%6").arg(Tan);
+                s+="°";
+                }
 
-                        ui->editYh->setText(s);
-                        isClear=true;
+                ui->editYh->setText(s);
+                isClear=true;
                 }
                 );
-
+        connect(ui->btntest,&QPushButton::clicked,
+                [=]()
+        {
+            testAll();
+        });
 }
 
 CalYh::~CalYh()
@@ -281,26 +268,37 @@ CalYh::~CalYh()
 
 void CalYh::layoutYh()
 {
-    QVBoxLayout *mainLayout;//整体布局为垂直布局
-    QVBoxLayout *topLayout;//控件textedit布局
+    QVBoxLayout *mainLayout;//整体布局为垂直布局,上方为topLayout,下边为bottomLayout
+    QHBoxLayout *medLayout;//中间布局为水平布局，左边为main,右边为test
+    QVBoxLayout *topLayout;//垂直布局，上方为editYh,下方为medLayout
+    QVBoxLayout *ritLayout;
     QGridLayout *bottomLayout;//按钮布局为网格布局
 
-    mainLayout = new QVBoxLayout(this);
+    mainLayout = new QVBoxLayout();
     topLayout = new QVBoxLayout();
+    ritLayout=new QVBoxLayout();
+    medLayout = new QHBoxLayout(this);
     bottomLayout = new QGridLayout();
 
     QSizePolicy sizepolicy(QSizePolicy::Preferred,QSizePolicy::Expanding);//设置格式
 
+    //1.右边垂直布局
+    ritLayout->addWidget(ui->btntest);
+    ritLayout->addWidget(ui->editYh2);
+    ritLayout->setStretchFactor(ui->btntest,1);
+    ritLayout->setStretchFactor(ui->editYh2,4);
+
+    //2.上半部分垂直布局
     topLayout->addWidget(ui->editYh); //控件添加布局
     topLayout->addWidget(ui->btnclear);
     ui->editYh->setSizePolicy(sizepolicy);
-    ui->btnclear->setSizePolicy(sizepolicy);
+
     //字体大小设置
     QFont ft;
     ft.setPointSize(15);
     ui->editYh->setFont(ft);
-    mainLayout->addLayout(topLayout);//控件添加到整体布局中
 
+    //3.下半部分网格布局
     bottomLayout->addWidget(ui->btn1,0,0);//按钮布局
     ui->btn1->setSizePolicy(sizepolicy);
     ft.setPointSize(15);
@@ -354,8 +352,23 @@ void CalYh::layoutYh()
     ui->btnarctan->setSizePolicy(sizepolicy);
     ui->btnarctan->setFont(ft);
 
+    //4.整个布局
+    mainLayout->addLayout(topLayout);//控件添加到整体布局中
     mainLayout->addLayout(bottomLayout);//将控件添加到整体布局中
 
+    //设置比例
     mainLayout->setStretchFactor(topLayout,1);
     mainLayout->setStretchFactor(bottomLayout,4);
+
+    //5.加test布局
+    medLayout->addLayout(mainLayout);
+    medLayout->addLayout(ritLayout);
+}
+
+QString CalYh::testAll()
+{
+    //1.sin函数测试
+    //1）负数测试
+
+
 }

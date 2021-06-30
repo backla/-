@@ -1,12 +1,12 @@
 #ifndef SIN_H
 #define SIN_H
-
+#include <qstring.h>
 
 class Sin
 {
 public:
     Sin();
-    double sin(double num);
+    QString SinTest(QString sIn);
 };
 
 #endif // SIN_H
